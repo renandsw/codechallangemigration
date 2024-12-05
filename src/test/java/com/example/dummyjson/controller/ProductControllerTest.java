@@ -1,16 +1,19 @@
 package com.example.dummyjson.controller;
 
 import com.example.dummyjson.dto.Product;
+import com.example.dummyjson.dto.ProductResponse;
 import com.example.dummyjson.service.ProductService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
@@ -18,11 +21,16 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class ProductControllerTest {
 
+    @Mock
+    private ProductService productService;
+
     @InjectMocks
     private ProductController productController;
 
-    @Mock
-    private ProductService productService;
+    @Before
+    public void setUp(){
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void testGetAllProducts() {
@@ -34,7 +42,7 @@ public class ProductControllerTest {
         product2.setId(2L);
         product2.setTitle("Product 2");
 
-        List<Product> products = Arrays.asList(product1, product2);
+        Optional<List<Product>> products = Optional.of(Arrays.asList(product1, product2));
         when(productService.getAllProducts()).thenReturn(products);
 
         List<Product> result = productController.getAllProducts();

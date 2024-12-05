@@ -5,20 +5,26 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Product {
 
     @NotNull
     @Min(0L)
     @Max(999L)
+    @JsonProperty("id")
     private Long id;
 
     @NotNull
+    @JsonProperty("title")
     private String title;
 
     @NotNull
+    @JsonProperty("description")
     private String description;
 
     @NotNull
+    @JsonProperty("price")
     private Double price;
 
     // Getters and Setters
@@ -53,5 +59,14 @@ public class Product {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{id="+id+
+                ",title='"+title+'\''+
+                ",description='"+description+'\''+
+                ",price="+price+
+                "}";
     }
 }

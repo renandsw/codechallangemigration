@@ -1,6 +1,8 @@
 package com.example.dummyjson.service;
 
 import com.example.dummyjson.dto.Product;
+import com.example.dummyjson.dto.ProductResponse;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,9 +37,11 @@ public class ProductServiceTest {
         product2.setTitle("Product 2");
 
         Product[] products = {product1, product2};
-        when(restTemplate.getForObject("https://dummyjson.com/products", Product[].class)).thenReturn(products);
+        ProductResponse response = new ProductResponse();
+        response.setProducts(List.of(products));
+        when(restTemplate.getForObject("https://dummyjson.com/products", ProductResponse.class)).thenReturn(response);
 
-        List<Product> result = productService.getAllProducts();
+        List<Product> result = productService.getAllProducts().get();
         assertEquals(2, result.size());
         assertEquals("Product 1", result.get(0).getTitle());
     }
