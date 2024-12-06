@@ -1,10 +1,13 @@
 package com.example.dummyjson.controller;
 
 import com.example.dummyjson.dto.Product;
+import com.example.dummyjson.dto.ProductResponse;
 import com.example.dummyjson.service.ProductService;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 
 @RestController
@@ -17,12 +20,12 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts().get();
+    public Mono<List<Product>> getAllProducts() {
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable @NotNull Long id) {
+    public Mono<Product> getProductById(@PathVariable @NotNull Long id) {
         return productService.getProductById(id);
     }
 }

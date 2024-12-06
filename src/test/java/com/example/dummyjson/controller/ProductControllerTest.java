@@ -1,8 +1,10 @@
 package com.example.dummyjson.controller;
 
 import com.example.dummyjson.dto.Product;
-import com.example.dummyjson.dto.ProductResponse;
 import com.example.dummyjson.service.ProductService;
+
+import reactor.core.publisher.Mono;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -42,12 +44,12 @@ public class ProductControllerTest {
         product2.setId(2L);
         product2.setTitle("Product 2");
 
-        Optional<List<Product>> products = Optional.of(Arrays.asList(product1, product2));
+        Mono<List<Product>> products = Mono.just(Arrays.asList(product1, product2));
         when(productService.getAllProducts()).thenReturn(products);
 
-        List<Product> result = productController.getAllProducts();
-        assertEquals(2, result.size());
-        assertEquals("Product 1", result.get(0).getTitle());
+        Mono<List<Product>> result = productController.getAllProducts();
+        assertEquals(2, result.block().size());
+        assertEquals("Product 1", result.block().get(0).getTitle());
     }
 
     @Test
@@ -56,9 +58,9 @@ public class ProductControllerTest {
         product.setId(1L);
         product.setTitle("Product 1");
 
-        when(productService.getProductById(1L)).thenReturn(product);
+        when(productService.getProductById(1L)).thenReturn(Mono.just(product));
 
-        Product result = productController.getProductById(1L);
-        assertEquals("Product 1", result.getTitle());
+        Mono<Product> result = productController.getProductById(1L);
+        assertEquals("Product 1", result.block().getTitle());
     }
 }

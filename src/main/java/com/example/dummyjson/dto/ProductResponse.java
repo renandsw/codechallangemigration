@@ -10,6 +10,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ProductResponse {
     @JsonProperty("products")
     private List<Product> products;
+
+
+    public ProductResponse(){}
+
+    public ProductResponse(List<Product> products){
+        this.products = products;
+    }
     
     public List<Product> getProducts(){
         return products;

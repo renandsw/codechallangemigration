@@ -3,6 +3,8 @@ package com.example.dummyjson.service;
 import com.example.dummyjson.dto.Product;
 import com.example.dummyjson.dto.ProductResponse;
 
+import reactor.core.publisher.Mono;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -41,9 +43,9 @@ public class ProductServiceTest {
         response.setProducts(List.of(products));
         when(restTemplate.getForObject("https://dummyjson.com/products", ProductResponse.class)).thenReturn(response);
 
-        List<Product> result = productService.getAllProducts().get();
-        assertEquals(2, result.size());
-        assertEquals("Product 1", result.get(0).getTitle());
+        Mono<List<Product>> result = productService.getAllProducts();
+        assertEquals(2, result.block().size());
+        assertEquals("Product 1", result.block().get(0).getTitle());
     }
 
     @Test
@@ -54,7 +56,7 @@ public class ProductServiceTest {
 
         when(restTemplate.getForObject("https://dummyjson.com/products/1", Product.class)).thenReturn(product);
 
-        Product result = productService.getProductById(1L);
-        assertEquals("Product 1", result.getTitle());
+        Mono<Product> result = productService.getProductById(1L);
+        assertEquals("Product 1", result.block().getTitle());
     }
 }

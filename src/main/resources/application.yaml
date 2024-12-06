@@ -1,2 +1,12 @@
 server:
   port: 8080
+
+logging:
+  level: 
+    '[org.springframework]': debug      
+    '[reactor.netty]': debug
+
+management:
+  endpoint:
+    health:
+      enabled: true 
